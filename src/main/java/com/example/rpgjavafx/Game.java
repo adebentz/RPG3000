@@ -23,7 +23,7 @@ public class Game implements Initializable {
         io.print("Démarage du jeu");
         int size = io.askInt("Combien de heros voulez vous ?", 1, 30);
         for (int i = 0; i < size; i++) {
-            int heroType = io.askInt("Quel type de hero voulez vous ? (1: Guerrier, 2: Chasseur, 3: Mage, 4: Médecin)", 1, 4);
+            int heroType = io.askInt("Quel type de hero voulez vous ? (1: Guerrier, 2: Chasseur, 3: Moine, 4: Médecin)", 1, 4);
             Hero hero = null;
             switch (heroType) {
                 case 1 -> hero = new Warrior();
@@ -43,12 +43,12 @@ public class Game implements Initializable {
             hero = heroes.get(heroIndex);
             io.print("Nouveau tour");
             if (enemy instanceof Boss)
-                io.print("Vous êtes tombé sur un boss!");
-            io.print("Vous avez " + hero.getLife() + " points de vie");
-            io.print("Votre ennemie a " + enemy.getLife() + " points de vie");
+                io.print("Vous êtes tombé sur un méchant boss!");
+            io.print("Vous avez " + hero.getLife() + " points de vie et votre ennemie a " + enemy.getLife() + " points de vie");
+            /**io.print("Votre ennemie a " + enemy.getLife() + " points de vie");**/
             io.print(hero.getName());
-            io.print("Nom: " + hero.getName());
-            io.print("Vie: " + hero.getLife());
+            io.print("Nom: " + hero.getName() + " et vie: " + hero.getLife());
+            /*io.print("Vie: " + hero.getLife());*/
             if (hero instanceof Hunter)
                 io.print("Attaque: " + hero.getWeaponDamage() + " - Flèches: " + ((Hunter) hero).getArrows());
             else
@@ -56,16 +56,16 @@ public class Game implements Initializable {
             io.print("Armure: " + hero.getArmor());
             if (hero instanceof SpellCaster)
                 io.print("Mana: " + ((SpellCaster) hero).getMana());
-            io.print("Ennemie");
-            io.print("Nom: " + enemy.getName());
-            io.print("Vie: " + enemy.getLife());
-            io.print("Actions");
+            io.print("Voici un vile " + enemy.getName()+" avec " + enemy.getLife()+ " de vie");
+            /*io.print("Nom: " + enemy.getName());
+            io.print("Vie: " + enemy.getLife());*/
+            /**io.print("Actions");**/
             io.print("Que voulez vous faire ?");
-            io.print("1: Attaquer");
-            io.print("2: Se défendre");
+            io.print("1: Attaquer, 2: Se défendre, "+"3: Utiliser une potion (" + hero.getPotionsCount() + " restantes)"+" 4: Manger un lembas (" + hero.getLembasCount() + " restants)");
+            /*io.print("2: Se défendre");
             io.print("3: Utiliser une potion (" + hero.getPotionsCount() + " restantes)");
-            io.print("4: Manger un lembas (" + hero.getLembasCount() + " restants)");
-            int choice = io.askInt("Votre choix ?", 1, 6);
+            io.print("4: Manger un lembas (" + hero.getLembasCount() + " restants)");*/
+            int choice = io.askInt("Votre choix ?", 1, 4);
             io.print("Hero");
             switch (choice) {
                 case 1 -> hero.attack(enemy);
@@ -75,7 +75,7 @@ public class Game implements Initializable {
             }
             if (enemy.isDead())
                 continue;
-            io.print("Ennemie");
+            io.print("c'est au tour de l'ennemie");
             hero.takeDamage(enemy);
         }
         return io.askBoolean("Voulez vous rejouer ? [y/n]: ");
@@ -86,10 +86,10 @@ public class Game implements Initializable {
      * @return true if there is still a hero alive, false if the game is over
      */
     private boolean heroDies(Hero hero) {
-        io.print("Votre hero est mort");
+        io.print("Votre hero est mort!");
         heroes.remove(hero);
         if (heroes.size() == 0) {
-            io.print("Vous n'avez aucun héro restant, vous avez perdu");
+            io.print("Tout vos héros ont péri, vous avez perdu!");
             return true;
         } else {
             heroIndex = random.nextInt(heroes.size());
@@ -103,10 +103,10 @@ public class Game implements Initializable {
      * @return true if there is still an enemy alive, false if the game is over
      */
     private boolean enemyDies() {
-        io.print("Vous avez battu votre ennemie");
+        io.print("Vous avez vaincu votre ennemie!");
         enemyCount--;
         if (enemyCount == 0) {
-            io.print("Vous avez battu tous les ennemies, vous avez gagné");
+            io.print("Vous avez vaincu tous les ennemies, vous avez gagné!");
             return true;
         } else {
             enemy = (random.nextInt(3) == 0) ? new BasicEnemy() : new Boss();
